@@ -93,7 +93,7 @@ void Bullet::FixedUpdate(float dt)
 	const auto& list = sceneGame->GetZombieList();
 	for (auto zombie : list)
 	{
-		if (!zombie->IsActive())
+		if (!zombie->IsActive() || zombie->GetIsDead())
 			continue;
 
 		sf::FloatRect bounds = GetGlobalBounds();

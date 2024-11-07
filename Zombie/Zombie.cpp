@@ -2,6 +2,7 @@
 #include "Zombie.h"
 #include "Player.h"
 #include "SceneGame.h"
+#include "UiHud.h"
 
 Zombie::Zombie(const std::string& name) : GameObject(name)
 {
@@ -77,7 +78,16 @@ void Zombie::Reset()
 
 void Zombie::Update(float dt)
 {
-	if (player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
+	if (isDead)
+	{
+		deadTimer += dt;
+		if (deadTimer > deadDelay)
+		{
+			sceneGame->OnZombieDie(this);
+		}
+	}
+
+	if (!isDead && player != nullptr && Utils::Distance(position, player->GetPosition()) > 1)
 	{
 		direction = Utils::GetNormal(player->GetPosition() - position);
 		SetRotation(Utils::Angle(direction));
@@ -116,6 +126,7 @@ void Zombie::SetType(Types type)
 	}
 	body.setTexture(TEXTURE_MGR.Get(textureId), true);
 	hp = maxHp;
+	deadTextureId = "graphics/blood.png";
 }
 
 void Zombie::OnDamage(int d)
@@ -123,6 +134,16 @@ void Zombie::OnDamage(int d)
 	hp -= d;
 	if (hp <= 0 && sceneGame != nullptr)
 	{
-		sceneGame->OnZombieDie(this);
+		isDead = true;
+		body.setTexture(TEXTURE_MGR.Get(deadTextureId), true);
+		sceneGame->SetSubZombieCount(1);
+		sceneGame->SetAddScore(100);
+		sceneGame->GetUiHud()->SetScore(sceneGame->GetScore());
+
+		if (sceneGame->GetHighScore() < sceneGame->GetScore())
+		{
+			sceneGame->SetAddHiScore(100);
+			sceneGame->GetUiHud()->SetHiScore(sceneGame->GetHighScore());
+		}
 	}
 }

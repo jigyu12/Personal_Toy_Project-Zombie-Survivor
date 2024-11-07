@@ -7,6 +7,9 @@
 #include "UiHud.h"
 #include "UiUpgrade.h"
 #include "UiGameOver.h"
+#include "ItemGenerator.h"
+#include "ItemBullet.h"
+#include "ItemHealth.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -16,10 +19,14 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	map = AddGo(new TileMap("TileMap"));
-	player = AddGo(new Player("Player"));
 	uiHud = AddGo(new UiHud("UiHud"));
 	uiUpgrade = AddGo(new UiUpgrade("UiUpgrade"));
+	player = AddGo(new Player("Player"));
 	uiGameOver = AddGo(new UiGameOver("UiGameOver"));
+	itemGenerator = AddGo(new ItemGenerator("ItemGenerator"));
+
+	highScore = 0.f;
+
 	Scene::Init();
 }
 
@@ -42,12 +49,25 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(size.x * 0.5f, size.y * 0.5f);
 
+	wave = 1;
+	score = 0.f;
+	zombieSpawnNum = 1;
+	zombieCount = 0;
+	isUpgrade = false;
+	isGameOver = false;
+	waveTimeDelay = 5.f;
+	waveTimeTimer = 0.f;
+	spawnTimeDelay = 1.f;
+	spawnTimeTimer = 0.f;
+
 	Scene::Enter();
 
 	zombieSpawnArea = map->GetMapBounds();
 
 	uiUpgrade->SetActive(false);
 	uiGameOver->SetActive(false);
+	uiHud->SetWave(wave);
+	uiHud->SetHiScore(highScore);
 }
 
 void SceneGame::Exit()
@@ -75,21 +95,43 @@ void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
 
+	if (isGameOver)
+	{
+		uiGameOver->SetActive(true);
+
+		if (InputMgr::GetKeyDown(sf::Keyboard::Enter))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+		}
+
+		return;
+	}
+
+	if (isUpgrade)
+		return;
+
 	Scene::Update(dt);
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
+	waveTimeTimer += dt;
+	
+	if (waveTimeTimer > waveTimeDelay)
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Game);
-	}
+		wave++;
+		uiHud->SetWave(wave);
+		zombieSpawnNum += 1;
+		waveTimeTimer = 0.f;
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SpawnZombies(100);
-	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
-	{
 		uiUpgrade->SetActive(!uiUpgrade->IsActive());
+		isUpgrade = true;
+	}
+
+	spawnTimeTimer += dt;
+	if (spawnTimeTimer > spawnTimeDelay)
+	{
+		SpawnZombies(zombieSpawnNum);
+		zombieCount += zombieSpawnNum;
+		uiHud->SetZombieCount(zombieCount);
+		spawnTimeTimer = 0.f;
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
@@ -155,5 +197,49 @@ void SceneGame::OnZombieDie(Zombie* zombie)
 void SceneGame::OnUpgrade(Upgrade up)
 {
 	uiUpgrade->SetActive(false);
-	std::cout << (int)up << std::endl;
+	
+	switch (up)
+	{
+	case Upgrade::RateOfFire:
+		player->SetSubShootDelay(0.8f);
+		break;
+	case Upgrade::ClipSize:
+		player->SetAddAmmoCountMax(10);
+		uiHud->SetAmmo(player->GetAmmoCountCurrent(), player->GetAmmoCountMax());
+		break;
+	case Upgrade::MaxHealth:
+		uiHud->SetHp(uiHud->GetCurrentHp() + 1000.f, uiHud->GetMaxHp() + 1000.f);
+		break;
+	case Upgrade::RunSpeed:
+		player->SetAddSpeed(100.f);
+		break;
+	case Upgrade::HealthPickups:
+	{
+		std::list<ItemHealth*> list = itemGenerator->GetitemHealthList();
+		itemGenerator->SetHealVal(500.f);
+		for (auto heals : list)
+		{
+			heals->SetHealVal(itemGenerator->GetHealVal());
+		}
+	}
+		break;
+	case Upgrade::AmmoPickups:
+	{
+		std::list<ItemBullet*> list = itemGenerator->GetitemBulletList();
+		itemGenerator->SetAmmoVal(5);
+		for (auto bullets : list)
+		{
+			bullets->SetAmmoVal(itemGenerator->GetAmmoVal());
+		}
+	}
+		break;
+	}
+
+	isUpgrade = false;
+}
+
+void SceneGame::SetSubZombieCount(const int value)
+{
+	zombieCount -= value;
+	uiHud->SetZombieCount(zombieCount);
 }

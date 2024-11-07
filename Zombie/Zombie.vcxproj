@@ -148,6 +148,9 @@
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Framework\SoundMgr.cpp" />
+    <ClCompile Include="ItemBullet.cpp" />
+    <ClCompile Include="ItemGenerator.cpp" />
+    <ClCompile Include="ItemHealth.cpp" />
     <ClCompile Include="UiGameOver.cpp" />
     <ClCompile Include="UiHud.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
@@ -199,6 +202,9 @@
     <ClInclude Include="Framework\stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\SoundMgr.h" />
+    <ClInclude Include="ItemBullet.h" />
+    <ClInclude Include="ItemGenerator.h" />
+    <ClInclude Include="ItemHealth.h" />
     <ClInclude Include="UiGameOver.h" />
     <ClInclude Include="UiHud.h" />
     <ClInclude Include="Framework\Utils.h" />
