@@ -49,5 +49,7 @@ public:
 	void OnZombieDie(Zombie* zombie);
 
 	void OnUpgrade(Upgrade up);
+
+	UiHud* GetUiHud() const { return uiHud; }
 };
 
