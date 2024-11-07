@@ -20,6 +20,9 @@ void SceneGame::Init()
 	uiUpgrade = AddGo(new UiUpgrade("UiUpgrade"));
 	player = AddGo(new Player("Player"));
 	uiGameOver = AddGo(new UiGameOver("UiGameOver"));
+
+	highScore = 0.f;
+
 	Scene::Init();
 }
 
@@ -42,12 +45,19 @@ void SceneGame::Enter()
 	uiView.setSize(size);
 	uiView.setCenter(size.x * 0.5f, size.y * 0.5f);
 
+	wave = 1;
+	score = 0.f;
+	zombieSpawnNum = 1;
+	zombieCount = 0;
+
 	Scene::Enter();
 
 	zombieSpawnArea = map->GetMapBounds();
 
 	uiUpgrade->SetActive(false);
 	uiGameOver->SetActive(false);
+	uiHud->SetWave(wave);
+	uiHud->SetHiScore(highScore);
 }
 
 void SceneGame::Exit()
@@ -77,14 +87,27 @@ void SceneGame::Update(float dt)
 
 	Scene::Update(dt);
 
+	waveTimeTimer += dt;
+	if (waveTimeTimer > waveTimeDelay)
+	{
+		wave++;
+		uiHud->SetWave(wave);
+		zombieSpawnNum *= 2;
+		waveTimeTimer = 0.f;
+	}
+
+	spawnTimeTimer += dt;
+	if (spawnTimeTimer > spawnTimeDelay)
+	{
+		SpawnZombies(zombieSpawnNum);
+		zombieCount += zombieSpawnNum;
+		uiHud->SetZombieCount(zombieCount);
+		spawnTimeTimer = 0.f;
+	}
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Escape))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);
-	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
-	{
-		SpawnZombies(10);
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
@@ -156,4 +179,10 @@ void SceneGame::OnUpgrade(Upgrade up)
 {
 	uiUpgrade->SetActive(false);
 	std::cout << (int)up << std::endl;
+}
+
+void SceneGame::SetSubZombieCount(const int value)
+{
+	zombieCount -= value;
+	uiHud->SetZombieCount(zombieCount);
 }

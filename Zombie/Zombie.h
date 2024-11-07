@@ -19,6 +19,7 @@ protected:
 	Types type = Types::Bloater;
 	sf::Sprite body;
 	std::string textureId;
+	std::string deadTextureId;
 
 	sf::Vector2f direction;
 
@@ -32,6 +33,10 @@ protected:
 
 	Player* player = nullptr;
 	SceneGame* sceneGame = nullptr;
+
+	bool isDead = false;
+	float deadDelay = 3.f;
+	float deadTimer = 0.f;
 
 public:
 	Zombie(const std::string& name = "");
