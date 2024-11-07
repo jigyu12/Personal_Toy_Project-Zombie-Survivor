@@ -62,4 +62,5 @@ public:
 
 	void OnDamage(int damge);
 
+	bool GetIsDead() const { return isDead; }
 };
