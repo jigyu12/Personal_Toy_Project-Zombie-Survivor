@@ -108,10 +108,7 @@ void UiHud::Reset()
 
 void UiHud::Update(float dt)
 {
-	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
-	{
-		
-	}
+	
 }
 
 void UiHud::Draw(sf::RenderWindow& window)

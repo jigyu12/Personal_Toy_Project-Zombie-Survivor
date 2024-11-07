@@ -3,6 +3,7 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "UiHud.h"
+#include "TileMap.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -89,7 +90,32 @@ void Player::Update(float dt)
 	look = Utils::GetNormal(mouseWorldPos - position);
 
 	SetRotation(Utils::Angle(look));
-	SetPosition(position + direction * speed * dt);
+
+	sf::Vector2f newPosition = position + direction * speed * dt;
+	SceneGame* gameScene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (gameScene)
+	{
+		sf::FloatRect tileRect = gameScene->GetTileMap()->GetGlobalBounds();
+		if (newPosition.x < tileRect.left + 50.f)
+		{
+			newPosition.x = tileRect.left + 50.f;
+		}
+		if (newPosition.x > tileRect.left + tileRect.width - 50.f)
+		{
+			newPosition.x = tileRect.left + tileRect.width - 50.f;
+		}
+
+		if (newPosition.y < tileRect.top + 50.f)
+		{
+			newPosition.y = tileRect.top + 50.f;
+		}
+		if (newPosition.y > tileRect.top + tileRect.height - 50.f)
+		{
+			newPosition.y = tileRect.top + tileRect.height - 50.f;
+		}
+	}
+	
+	SetPosition(newPosition);
 
 	shootTimer += dt;
 
