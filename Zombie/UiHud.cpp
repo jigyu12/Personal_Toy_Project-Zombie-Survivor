@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UiHud.h"
+#include "SceneGame.h"
 
 UiHud::UiHud(const std::string& name)
 	: GameObject(name)
@@ -47,6 +48,9 @@ void UiHud::Release()
 
 void UiHud::Reset()
 {
+	maxHp = 4000.f;
+	currentHp = maxHp;
+
 	float textSize = 50.f;
 	sf::Font& font = FONT_MGR.Get("fonts/zombiecontrol.ttf");
 	textScore.setFont(font);
@@ -97,18 +101,24 @@ void UiHud::Reset()
 	textWave.setPosition(size.x - 400.f, BottomY);
 	textZombieCount.setPosition(size.x - 25.f, BottomY);
 
+	currentHp = maxHp;
 	
 	SetScore(0);
 	SetHiScore(0);
 	SetAmmo(0, 0);
-	SetHp(1.f, 1.f);
+	SetHp(currentHp, maxHp);
 	SetWave(0);
 	SetZombieCount(0);
 }
 
 void UiHud::Update(float dt)
 {
-	
+	SetHp(currentHp, maxHp);
+
+	if (currentHp <= 0.f)
+	{
+		dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->SetIsGameOver(true);
+	}
 }
 
 void UiHud::Draw(sf::RenderWindow& window)
@@ -142,8 +152,9 @@ void UiHud::SetAmmo(int current, int total)
 
 void UiHud::SetHp(int hp, int max)
 {
-	float value = (float)hp / max;
-	gaugeHp.setSize({ gaugeHpMaxSize.x * value, gaugeHpMaxSize.y });
+	maxHp = max;
+	currentHp = Utils::Clamp(hp, 0.f, maxHp);
+	gaugeHp.setSize({ currentHp / 10, gaugeHpMaxSize.y });
 }
 
 void UiHud::SetWave(int w)

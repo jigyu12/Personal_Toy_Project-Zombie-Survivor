@@ -13,7 +13,10 @@ protected:
 	sf::Text textWave;
 	sf::Text textZombieCount;
 
-	sf::Vector2f gaugeHpMaxSize = { 400.f, 50.f };
+	float maxHp = 4000.f;
+	float currentHp = 0.f;
+
+	sf::Vector2f gaugeHpMaxSize = { maxHp / 10, 50.f };
 
 public:
 	UiHud(const std::string& name = "");
@@ -38,4 +41,7 @@ public:
 	void SetHp(int hp, int max);
 	void SetWave(int w);
 	void SetZombieCount(int count);
+
+	float GetMaxHp() const { return maxHp; }
+	float GetCurrentHp() { return currentHp; }
 };

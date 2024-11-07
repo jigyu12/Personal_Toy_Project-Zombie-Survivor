@@ -11,16 +11,16 @@ protected:
 	sf::Vector2f direction;
 	sf::Vector2f look;
 
-	float speed = 500.f;
+	float speed = 400.f;
 
 	SceneGame* sceneGame;
 
-	float shootDelay = 0.5f;
+	float shootDelay = 1.f;
 	float shootTimer = 0.f;
 
-	int ammoCountMax = 5;
+	int ammoCountMax = 10;
 	int ammoCountcurrent = 0;
-	float reloadDelay = 3.f;
+	float reloadDelay = 2.f;
 	float reloadTimer = 0.f;
 	bool isReload = false;
 
@@ -39,7 +39,18 @@ public:
 	void Release() override;
 	void Reset() override;
 	void Update(float dt) override;
+	void FixedUpdate(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
 	void Shoot();
+
+	sf::FloatRect GetGlobalBounds() const override { return body.getGlobalBounds(); }
+	sf::FloatRect GetLocalBounds() const override { return body.getLocalBounds(); }
+	int GetAmmoCountMax() const { return ammoCountMax; }
+	int GetAmmoCountCurrent() const { return ammoCountcurrent; }
+
+	void SetSubShootDelay(const float persent) { shootDelay *= persent; }
+	void SetAddAmmoCountMax(const int value) { ammoCountMax += value; }
+	void SetAddSpeed(const float value) { speed += value; }
+	void SetAddAmmoCountCurrent(const int value);
 };

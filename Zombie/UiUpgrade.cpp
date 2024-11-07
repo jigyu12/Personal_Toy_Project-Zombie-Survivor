@@ -88,7 +88,7 @@ void UiUpgrade::FixedUpdate(float dt)
 			if (upgrades[i].getGlobalBounds().contains(mousePos))
 			{
 				upgrades[i].setFillColor(sf::Color::Red);
-				if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+				if (InputMgr::GetMouseButtonDown(sf::Mouse::Right))
 				{
 					sceneGame->OnUpgrade((Upgrade)i);
 					return;

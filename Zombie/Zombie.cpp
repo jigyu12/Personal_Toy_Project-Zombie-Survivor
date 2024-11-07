@@ -81,15 +81,13 @@ void Zombie::Update(float dt)
 	if (isDead)
 	{
 		deadTimer += dt;
-		body.setTexture(TEXTURE_MGR.Get(deadTextureId), true);
-
 		if (deadTimer > deadDelay)
 		{
 			sceneGame->OnZombieDie(this);
 		}
 	}
 
-	if (!isDead && player != nullptr && Utils::Distance(position, player->GetPosition()) > 10)
+	if (!isDead && player != nullptr && Utils::Distance(position, player->GetPosition()) > 1)
 	{
 		direction = Utils::GetNormal(player->GetPosition() - position);
 		SetRotation(Utils::Angle(direction));
@@ -137,6 +135,7 @@ void Zombie::OnDamage(int d)
 	if (hp <= 0 && sceneGame != nullptr)
 	{
 		isDead = true;
+		body.setTexture(TEXTURE_MGR.Get(deadTextureId), true);
 		sceneGame->SetSubZombieCount(1);
 		sceneGame->SetAddScore(100);
 		sceneGame->GetUiHud()->SetScore(sceneGame->GetScore());

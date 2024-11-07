@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "UiHud.h"
 #include "TileMap.h"
+#include "Zombie.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -66,9 +67,21 @@ void Player::Reset()
 	SetRotation(0.f);
 	direction = { 1.f, 0.f };
 
+	
+	ammoCountMax = 10;
+	ammoCountcurrent = 0;
+	ammoCountcurrent = ammoCountMax;
+
+	shootDelay = 1.0f;
+	shootTimer = 0.f;
 	shootTimer = shootDelay;
 
-	ammoCountcurrent = ammoCountMax;
+	reloadDelay = 2.f;
+	reloadTimer = 0.f;
+	reloadTimer = reloadDelay;
+	isReload = false;
+
+	speed = 400.f;
 
 	SceneGame* gameScene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
 	if (gameScene)
@@ -116,6 +129,8 @@ void Player::Update(float dt)
 	}
 	
 	SetPosition(newPosition);
+	
+	hitbox.UpdateTr(body, GetLocalBounds());
 
 	shootTimer += dt;
 
@@ -147,6 +162,32 @@ void Player::Update(float dt)
 	}
 }
 
+void Player::FixedUpdate(float dt)
+{
+	if (sceneGame == nullptr || sceneGame->IsUpgrade())
+		return;
+
+	const auto& list = sceneGame->GetZombieList();
+	for (auto zombie : list)
+	{
+		if (!zombie->IsActive() || zombie->GetIsDead())
+			continue;
+
+		sf::FloatRect bounds = GetGlobalBounds();
+		sf::FloatRect zombieBounds = zombie->GetGlobalBounds();
+
+		if (bounds.intersects(zombieBounds))
+		{
+			HitBox& boxZombie = zombie->GetHitBox();
+			if (Utils::CheckCollision(hitbox, boxZombie))
+			{
+				sceneGame->GetUiHud()->SetHp(sceneGame->GetUiHud()->GetCurrentHp() - 700.f * dt, sceneGame->GetUiHud()->GetMaxHp());
+			}
+		}
+
+	}
+}
+
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
@@ -156,4 +197,10 @@ void Player::Shoot()
 {
 	Bullet* bullet = sceneGame->TakeBullet();
 	bullet->Fire(position, look, 1000.f, 10);
+}
+
+void Player::SetAddAmmoCountCurrent(const int value)
+{
+	ammoCountcurrent += value;
+	ammoCountcurrent = Utils::Clamp(ammoCountcurrent, 0, ammoCountMax);
 }
