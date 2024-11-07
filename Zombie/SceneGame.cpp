@@ -16,9 +16,9 @@ SceneGame::SceneGame()
 void SceneGame::Init()
 {
 	map = AddGo(new TileMap("TileMap"));
-	player = AddGo(new Player("Player"));
 	uiHud = AddGo(new UiHud("UiHud"));
 	uiUpgrade = AddGo(new UiUpgrade("UiUpgrade"));
+	player = AddGo(new Player("Player"));
 	uiGameOver = AddGo(new UiGameOver("UiGameOver"));
 	Scene::Init();
 }
@@ -84,7 +84,7 @@ void SceneGame::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		SpawnZombies(100);
+		SpawnZombies(10);
 	}
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))

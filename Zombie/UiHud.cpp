@@ -97,7 +97,7 @@ void UiHud::Reset()
 	textWave.setPosition(size.x - 400.f, BottomY);
 	textZombieCount.setPosition(size.x - 25.f, BottomY);
 
-
+	
 	SetScore(0);
 	SetHiScore(0);
 	SetAmmo(0, 0);
@@ -108,6 +108,10 @@ void UiHud::Reset()
 
 void UiHud::Update(float dt)
 {
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		
+	}
 }
 
 void UiHud::Draw(sf::RenderWindow& window)

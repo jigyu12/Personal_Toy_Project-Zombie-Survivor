@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "UiHud.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -65,6 +66,12 @@ void Player::Reset()
 	direction = { 1.f, 0.f };
 
 	shootTimer = shootDelay;
+
+	ammoCountcurrent = ammoCountMax;
+
+	SceneGame* gameScene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+	if (gameScene)
+		gameScene->GetUiHud()->SetAmmo(ammoCountcurrent, ammoCountMax);
 }
 
 void Player::Update(float dt)
@@ -85,10 +92,32 @@ void Player::Update(float dt)
 	SetPosition(position + direction * speed * dt);
 
 	shootTimer += dt;
+
+	if (ammoCountcurrent <= 0)
+	{
+		reloadTimer += dt;
+
+		if (reloadTimer < reloadDelay)
+			return;
+
+		SceneGame* gameScene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		ammoCountcurrent = ammoCountMax;
+		gameScene->GetUiHud()->SetAmmo(ammoCountcurrent, ammoCountMax);
+		reloadTimer = 0.f;
+	}
+
 	if (shootTimer > shootDelay && InputMgr::GetMouseButton(sf::Mouse::Left))
 	{
 		shootTimer = 0.f;
+
 		Shoot();
+
+		SceneGame* gameScene = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene());
+		if (gameScene)
+		{
+			ammoCountcurrent--;
+			gameScene->GetUiHud()->SetAmmo(ammoCountcurrent, ammoCountMax);
+		}
 	}
 }
 

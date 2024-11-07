@@ -18,6 +18,12 @@ protected:
 	float shootDelay = 0.5f;
 	float shootTimer = 0.f;
 
+	int ammoCountMax = 5;
+	int ammoCountcurrent = 0;
+	float reloadDelay = 3.f;
+	float reloadTimer = 0.f;
+	bool isReload = false;
+
 public:
 	Player(const std::string& name = "");
 	~Player() = default;
