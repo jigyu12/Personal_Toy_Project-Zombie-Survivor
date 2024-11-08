@@ -11,6 +11,8 @@ class UiUpgrade;
 class UiGameOver;
 class ItemGenerator;
 enum class Upgrade;
+class ItemBullet;
+class ItemHealth;
 
 class SceneGame : public Scene
 {
@@ -29,6 +31,12 @@ protected:
 	std::list<Bullet*> bullets;
 	ObjectPool<Bullet> bulletPool;
 
+	std::list<ItemBullet*>* itemBullets;
+	ObjectPool<ItemBullet>* itemBulletPool;
+
+	std::list<ItemHealth*>* itemHealths;
+	ObjectPool<ItemHealth>* itemHealthPool;
+
 	sf::Sprite cursor;
 
 	float waveTimeDelay = 5.f;
@@ -40,8 +48,8 @@ protected:
 	int wave = 1;
 	int zombieSpawnNum = 1;
 	int zombieCount = 0;
-	int score = 0.f;
-	int highScore = 0.f;
+	int score = 0;
+	int highScore = 0;
 
 	bool isUpgrade = false;
 	bool isGameOver = false;
@@ -79,9 +87,14 @@ public:
 
 	void SetSubZombieCount(const int value); 
 	void SetAddScore(const int value) { score += value; }
-	void SetAddHiScore(const int value) { highScore += value; }
+	void SetAddHiScore(const int value);
 
 	void SetIsUpgrade(const bool isupgrade) { isUpgrade = isupgrade; }
 	void SetIsGameOver(const bool isgameover) { isGameOver = isgameover; }
+
+	std::list<ItemBullet*>* GetItemBulletList() const { return itemBullets; }
+	ObjectPool<ItemBullet>* GetItemBulletPool() const { return itemBulletPool; }
+	std::list<ItemHealth*>* GetItemHealthList() const { return itemHealths; }
+	ObjectPool<ItemHealth>* GetItemHealthPool() const { return itemHealthPool; }
 };
 

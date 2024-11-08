@@ -77,6 +77,7 @@ void ItemBullet::Update(float dt)
 		HitBox& boxPlayer = player->GetHitBox();
 		if (Utils::CheckCollision(hitbox, boxPlayer))
 		{
+			std::cout << addAmmoVal << std::endl;
 			player->SetAddAmmoCountCurrent(addAmmoVal);
 			dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetUiHud()->SetAmmo(player->GetAmmoCountCurrent(), player->GetAmmoCountMax());
 			SetActive(false);

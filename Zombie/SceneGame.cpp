@@ -25,14 +25,33 @@ void SceneGame::Init()
 	uiGameOver = AddGo(new UiGameOver("UiGameOver"));
 	itemGenerator = AddGo(new ItemGenerator("ItemGenerator"));
 
-	highScore = 0.f;
+	itemBullets = new std::list<ItemBullet*>();
+	itemBulletPool = new ObjectPool<ItemBullet>();
+	itemHealths = new std::list<ItemHealth*>();
+	itemHealthPool = new ObjectPool<ItemHealth>();
 
+	std::fstream iFile("HighScore.txt", std::ios::in);
+
+	if (!iFile)
+	{
+		std::cerr << "File IO Failed" << std::endl;
+	}
+
+	iFile >> highScore;
+
+	iFile.close();
+	
 	Scene::Init();
 }
 
 void SceneGame::Release()
 {
 	Scene::Release();
+
+	delete itemBullets;
+	delete itemBulletPool;
+	delete itemHealths;
+	delete itemHealthPool;
 }
 
 void SceneGame::Enter()
@@ -242,4 +261,21 @@ void SceneGame::SetSubZombieCount(const int value)
 {
 	zombieCount -= value;
 	uiHud->SetZombieCount(zombieCount);
+}
+
+void SceneGame::SetAddHiScore(const int value)
+{
+	highScore += value;
+
+	std::fstream oFile("HighScore.txt", std::ios::out);
+
+	if (!oFile)
+	{
+		std::cerr << "File IO Failed" << std::endl;
+	}
+
+	oFile << highScore;
+
+	oFile.close();
+	
 }

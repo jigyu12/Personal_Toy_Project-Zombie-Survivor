@@ -52,15 +52,15 @@ void ItemGenerator::Update(float dt)
 
 		if (Utils::RandomValue() < 0.5f)
 		{
-			ItemBullet* itemBullet = itemBulletPool.Take();
-			itemBullets.push_back(itemBullet);
+			ItemBullet* itemBullet = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetItemBulletPool()->Take();
+			dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetItemBulletList()->push_back(itemBullet);
 			dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->AddGo(itemBullet);
 			itemBullet->SetPosition(position);
 		}
 		else
 		{
-			ItemHealth* itemhealth = itemHealthPool.Take();
-			itemHealths.push_back(itemhealth);
+			ItemHealth* itemhealth = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetItemHealthPool()->Take();
+			dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetItemHealthList()->push_back(itemhealth);
 			dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->AddGo(itemhealth);
 			itemhealth->SetPosition(position);
 		}

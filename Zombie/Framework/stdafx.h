@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iostream>
 #include <limits>
+#include <fstream>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
