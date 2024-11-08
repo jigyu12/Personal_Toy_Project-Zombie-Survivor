@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Scene.h"
+#include "ItemBullet.h"
+#include "ItemHealth.h"
 
 Scene::Scene(SceneIds id)
 	: id(id)
@@ -21,6 +23,9 @@ void Scene::Release()
 {
 	for (auto obj : gameObjects)
 	{
+		if (dynamic_cast<ItemBullet*>(obj) || dynamic_cast<ItemHealth*>(obj))
+			continue;
+
 		obj->Release();
 		delete obj;
 	}

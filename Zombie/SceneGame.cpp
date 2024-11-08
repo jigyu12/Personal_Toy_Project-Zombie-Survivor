@@ -78,6 +78,8 @@ void SceneGame::Enter()
 	waveTimeTimer = 0.f;
 	spawnTimeDelay = 1.f;
 	spawnTimeTimer = 0.f;
+	addAmmoVal = 5;
+	addHealVal = 500.f;
 
 	Scene::Enter();
 
@@ -151,11 +153,6 @@ void SceneGame::Update(float dt)
 		zombieCount += zombieSpawnNum;
 		uiHud->SetZombieCount(zombieCount);
 		spawnTimeTimer = 0.f;
-	}
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
-	{
-		uiGameOver->SetActive(!uiGameOver->IsActive());
 	}
 
 	if (player != nullptr)
@@ -234,21 +231,19 @@ void SceneGame::OnUpgrade(Upgrade up)
 		break;
 	case Upgrade::HealthPickups:
 	{
-		std::list<ItemHealth*> list = itemGenerator->GetitemHealthList();
-		itemGenerator->SetHealVal(500.f);
-		for (auto heals : list)
+		addHealVal += 500.f;
+		for (auto heals : *itemHealths)
 		{
-			heals->SetHealVal(itemGenerator->GetHealVal());
+			heals->SetHealVal(addHealVal);
 		}
 	}
 		break;
 	case Upgrade::AmmoPickups:
 	{
-		std::list<ItemBullet*> list = itemGenerator->GetitemBulletList();
-		itemGenerator->SetAmmoVal(5);
-		for (auto bullets : list)
+		addAmmoVal += 5;
+		for (auto bullets : *itemBullets)
 		{
-			bullets->SetAmmoVal(itemGenerator->GetAmmoVal());
+			bullets->SetAmmoVal(addAmmoVal);
 		}
 	}
 		break;

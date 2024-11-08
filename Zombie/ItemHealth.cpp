@@ -64,7 +64,7 @@ void ItemHealth::Reset()
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
 
-	addHealVal = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetItemGenerator()->GetHealVal();
+	addHealVal = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetHealVal();
 }
 
 void ItemHealth::Update(float dt)

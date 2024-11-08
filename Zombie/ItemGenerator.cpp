@@ -36,9 +36,6 @@ void ItemGenerator::Reset()
 {
 	generateDelay = 1.0f;
 	generateTimer = 0.f;
-
-	addAmmoVal = 5;
-	addHealVal = 500.f;
 }
 
 void ItemGenerator::Update(float dt)

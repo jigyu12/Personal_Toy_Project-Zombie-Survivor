@@ -54,6 +54,9 @@ protected:
 	bool isUpgrade = false;
 	bool isGameOver = false;
 
+	int addAmmoVal = 5;
+	float addHealVal = 500.f;
+
 public:
 	SceneGame();
 	virtual ~SceneGame() = default;
@@ -96,5 +99,10 @@ public:
 	ObjectPool<ItemBullet>* GetItemBulletPool() const { return itemBulletPool; }
 	std::list<ItemHealth*>* GetItemHealthList() const { return itemHealths; }
 	ObjectPool<ItemHealth>* GetItemHealthPool() const { return itemHealthPool; }
+
+	void SetAmmoVal(const int val) { addAmmoVal += val; }
+	int GetAmmoVal() const { return addAmmoVal; }
+	void SetHealVal(const int val) { addHealVal += val; }
+	float GetHealVal() const { return addHealVal; }
 };
 
