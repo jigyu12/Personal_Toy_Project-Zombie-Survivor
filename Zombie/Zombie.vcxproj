@@ -147,10 +147,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Framework\DataTableMgr.cpp" />
+    <ClCompile Include="Framework\DataTable.cpp" />
     <ClCompile Include="Framework\SoundMgr.cpp" />
     <ClCompile Include="ItemBullet.cpp" />
     <ClCompile Include="ItemGenerator.cpp" />
     <ClCompile Include="ItemHealth.cpp" />
+    <ClCompile Include="Framework\StringTable.cpp" />
+    <ClCompile Include="Framework\ItemTable.cpp" />
     <ClCompile Include="UiGameOver.cpp" />
     <ClCompile Include="UiHud.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
@@ -183,9 +187,12 @@
     <ClCompile Include="Framework\HitBox.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Framework\ZombieTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Framework\DataTableMgr.h" />
+    <ClInclude Include="Framework\DataTable.h" />
     <ClInclude Include="Framework\DebugBox.h" />
     <ClInclude Include="Framework\Defines.h" />
     <ClInclude Include="Framework\Framework.h" />
@@ -205,6 +212,8 @@
     <ClInclude Include="ItemBullet.h" />
     <ClInclude Include="ItemGenerator.h" />
     <ClInclude Include="ItemHealth.h" />
+    <ClInclude Include="Framework\StringTable.h" />
+    <ClInclude Include="Framework\ItemTable.h" />
     <ClInclude Include="UiGameOver.h" />
     <ClInclude Include="UiHud.h" />
     <ClInclude Include="Framework\Utils.h" />
@@ -221,6 +230,7 @@
     <ClInclude Include="UiUpgrade.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="Framework\HitBox.h" />
+    <ClInclude Include="Framework\ZombieTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -30,6 +30,8 @@ public:
 	virtual void Draw(sf::RenderWindow& window);
 	virtual void OnPostDraw();
 
+	virtual void OnLocalize(Languages lang);
+
 	template<typename T>
 	T* AddGo(T* obj)
 	{

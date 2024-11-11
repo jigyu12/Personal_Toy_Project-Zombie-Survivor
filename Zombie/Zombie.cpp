@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "UiHud.h"
+#include "ZombieTable.h"
 
 Zombie::Zombie(const std::string& name) : GameObject(name)
 {
@@ -109,7 +110,16 @@ void Zombie::Draw(sf::RenderWindow& window)
 
 void Zombie::SetType(Types type)
 {
-	this->type = type;
+	const auto& data = ZOMBIE_TABLE->Get(type);
+	textureId = data.textureId;
+	maxHp = data.maxHp;
+	speed = data.speed;
+
+	body.setTexture(TEXTURE_MGR.Get(textureId), true);
+	hp = maxHp;
+	deadTextureId = "graphics/blood.png";
+
+	/*this->type = type;
 	switch (this->type)
 	{
 	case Types::Bloater:
@@ -130,7 +140,7 @@ void Zombie::SetType(Types type)
 	}
 	body.setTexture(TEXTURE_MGR.Get(textureId), true);
 	hp = maxHp;
-	deadTextureId = "graphics/blood.png";
+	deadTextureId = "graphics/blood.png";*/
 }
 
 void Zombie::OnDamage(int d)
@@ -142,7 +152,7 @@ void Zombie::OnDamage(int d)
 		body.setTexture(TEXTURE_MGR.Get(deadTextureId), true);
 		sceneGame->SetSubZombieCount(1);
 		sceneGame->SetAddScore(100);
-		sceneGame->GetUiHud()->SetScore(sceneGame->GetScore());
+		sceneGame->GetUiHud()->SetStringScore("SCORE");
 
 		if (sceneGame->GetHighScore() < sceneGame->GetScore())
 		{

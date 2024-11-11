@@ -1,0 +1,4 @@
+ID(0: Bloater 1:Chaser 2: Crawler),TEXTUREID,HP,SPEED
+0,graphics/bloater.png,50,100.0
+1,graphics/chaser.png,20,75.0
+2,graphics/crawler.png,10,50.0

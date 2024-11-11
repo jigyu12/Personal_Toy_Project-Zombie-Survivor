@@ -10,6 +10,7 @@
 #include "ItemGenerator.h"
 #include "ItemBullet.h"
 #include "ItemHealth.h"
+#include "ItemTable.h"
 
 SceneGame::SceneGame()
 	: Scene(SceneIds::Game)
@@ -20,6 +21,8 @@ void SceneGame::Init()
 {
 	map = AddGo(new TileMap("TileMap"));
 	uiHud = AddGo(new UiHud("UiHud"));
+	uiHud->SetStringScore("SCORE");
+
 	uiUpgrade = AddGo(new UiUpgrade("UiUpgrade"));
 	player = AddGo(new Player("Player"));
 	uiGameOver = AddGo(new UiGameOver("UiGameOver"));
@@ -74,12 +77,12 @@ void SceneGame::Enter()
 	zombieCount = 0;
 	isUpgrade = false;
 	isGameOver = false;
-	waveTimeDelay = 5.f;
+	waveTimeDelay = 10.f;
 	waveTimeTimer = 0.f;
 	spawnTimeDelay = 1.f;
 	spawnTimeTimer = 0.f;
-	addAmmoVal = 5;
-	addHealVal = 500.f;
+	addAmmoVal = ITEM_TABLE->Get("BULLET").value;
+	addHealVal = ITEM_TABLE->Get("HEAL").value;
 
 	Scene::Enter();
 
@@ -115,6 +118,24 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
+	{
+		Variables::currentLang = Languages::korean;
+		OnLocalize(Variables::currentLang);
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
+	{
+		Variables::currentLang = Languages::English;
+		OnLocalize(Variables::currentLang);
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+	{
+		Variables::currentLang = Languages::Japanese;
+		OnLocalize(Variables::currentLang);
+	}
 
 	if (isGameOver)
 	{

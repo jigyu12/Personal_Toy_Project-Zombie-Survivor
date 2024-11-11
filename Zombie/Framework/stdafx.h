@@ -9,16 +9,22 @@
 #include <iostream>
 #include <limits>
 #include <fstream>
+#include <locale>
+#include <codecvt>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "Variables.h"
+#include "rapidcsv.h"
 #include "Defines.h"
+#include "Variables.h"
 #include "DebugBox.h"
 #include "HitBox.h"
 #include "Utils.h"
 #include "Singleton.h"
+#include "DataTable.h"
+#include "StringTable.h"
+#include "DataTableMgr.h"
 #include "Framework.h"
 #include "InputMgr.h"
 #include "ResourceMgr.h"

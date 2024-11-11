@@ -1,0 +1,3 @@
+ID,TEXTUREID,VALUE
+BULLET,graphics/ammo_pickup.png,5
+HEAL,graphics/health_pickup.png,500.0

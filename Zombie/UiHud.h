@@ -13,6 +13,8 @@ protected:
 	sf::Text textWave;
 	sf::Text textZombieCount;
 
+	std::string stringScoreId;
+
 	float maxHp = 4000.f;
 	float currentHp = 0.f;
 
@@ -44,4 +46,7 @@ public:
 
 	float GetMaxHp() const { return maxHp; }
 	float GetCurrentHp() { return currentHp; }
+
+	void SetStringScore(const std::string& scoreId);
+	void OnLocalize(Languages lang) override;
 };

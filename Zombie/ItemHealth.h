@@ -4,7 +4,7 @@ class ItemHealth : public GameObject
 {
 protected:
 	sf::Sprite body;
-	std::string textureId = "graphics/health_pickup.png";
+	std::string textureId; //= "graphics/health_pickup.png";
 
 	float addHealVal;
 

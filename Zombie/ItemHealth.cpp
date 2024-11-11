@@ -5,6 +5,7 @@
 #include "UiHud.h"
 #include "SceneGame.h"
 #include "ItemGenerator.h"
+#include "ItemTable.h"
 
 ItemHealth::ItemHealth(const std::string& name)
 	: GameObject(name)
@@ -57,7 +58,7 @@ void ItemHealth::Release()
 
 void ItemHealth::Reset()
 {
-	body.setTexture(TEXTURE_MGR.Get(textureId));
+	body.setTexture(TEXTURE_MGR.Get(ITEM_TABLE->Get("HEAL").textureId));
 	SetOrigin(Origins::MC);
 
 	SetPosition({ 0.f, 0.f });
@@ -79,6 +80,7 @@ void ItemHealth::Update(float dt)
 		if (Utils::CheckCollision(hitbox, boxPlayer))
 		{
 			UiHud* uiHud = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetUiHud();
+			std::cout << "Heal: " << addHealVal << std::endl;
 			uiHud->SetHp(uiHud->GetCurrentHp() + addHealVal,uiHud->GetMaxHp());
 			SetActive(false);
 		}

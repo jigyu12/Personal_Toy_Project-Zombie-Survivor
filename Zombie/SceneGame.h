@@ -39,7 +39,7 @@ protected:
 
 	sf::Sprite cursor;
 
-	float waveTimeDelay = 5.f;
+	float waveTimeDelay = 10.f;
 	float waveTimeTimer = 0.f;
 
 	float spawnTimeDelay = 1.f;
@@ -54,8 +54,8 @@ protected:
 	bool isUpgrade = false;
 	bool isGameOver = false;
 
-	int addAmmoVal = 5;
-	float addHealVal = 500.f;
+	int addAmmoVal;// = 5;
+	float addHealVal;// = 500.f;
 
 public:
 	SceneGame();

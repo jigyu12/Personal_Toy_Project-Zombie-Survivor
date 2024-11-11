@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "UiHud.h"
 #include "ItemGenerator.h"
+#include "ItemTable.h"
 
 ItemBullet::ItemBullet(const std::string& name)
 	: GameObject(name)
@@ -56,7 +57,7 @@ void ItemBullet::Release()
 
 void ItemBullet::Reset()
 {
-	body.setTexture(TEXTURE_MGR.Get(textureId));
+	body.setTexture(TEXTURE_MGR.Get(ITEM_TABLE->Get("BULLET").textureId));
 	SetOrigin(Origins::MC);
 
 	SetPosition({ 0.f, 0.f });
@@ -78,6 +79,7 @@ void ItemBullet::Update(float dt)
 		if (Utils::CheckCollision(hitbox, boxPlayer))
 		{
 			player->SetAddAmmoCountCurrent(addAmmoVal);
+			std::cout << "Bullet: " << addAmmoVal << std::endl;
 			dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetUiHud()->SetAmmo(player->GetAmmoCountCurrent(), player->GetAmmoCountMax());
 			SetActive(false);
 		}

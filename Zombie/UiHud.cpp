@@ -52,11 +52,12 @@ void UiHud::Reset()
 	currentHp = maxHp;
 
 	float textSize = 50.f;
-	sf::Font& font = FONT_MGR.Get("fonts/zombiecontrol.ttf");
+	sf::Font& font = FONT_MGR.Get("fonts/malgun.ttf");
 	textScore.setFont(font);
 	textScore.setCharacterSize(textSize);
 	textScore.setFillColor(sf::Color::White);
 	Utils::SetOrigin(textScore, Origins::TL);
+	SetStringScore(stringScoreId);
 
 	textHighScore.setFont(font);
 	textHighScore.setCharacterSize(textSize);
@@ -103,7 +104,7 @@ void UiHud::Reset()
 
 	currentHp = maxHp;
 	
-	SetScore(0);
+	//SetScore(0);
 	SetHiScore(0);
 	SetAmmo(0, 0);
 	SetHp(currentHp, maxHp);
@@ -167,4 +168,17 @@ void UiHud::SetZombieCount(int count)
 {
 	textZombieCount.setString("ZOMBIES: " + std::to_string(count));
 	Utils::SetOrigin(textZombieCount, Origins::BR);
+}
+
+void UiHud::SetStringScore(const std::string& scoreId)
+{
+	stringScoreId = scoreId;
+	textScore.setString(STRING_TABLE->Get(stringScoreId, Variables::currentLang) + L": " + std::to_wstring(dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetScore()));
+	SetOrigin(originPreset);
+}
+
+void UiHud::OnLocalize(Languages lang)
+{
+	textScore.setString(STRING_TABLE->Get(stringScoreId, lang) + +L": " + std::to_wstring(dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene())->GetScore()));
+	SetOrigin(originPreset);
 }

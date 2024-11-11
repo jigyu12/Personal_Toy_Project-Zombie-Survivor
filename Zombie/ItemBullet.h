@@ -4,7 +4,7 @@ class ItemBullet : public GameObject
 {
 protected:
 	sf::Sprite body;
-	std::string textureId = "graphics/ammo_pickup.png";
+	std::string textureId; //= "graphics/ammo_pickup.png";
 
 	int addAmmoVal;
 
