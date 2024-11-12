@@ -28,6 +28,8 @@
 #include "Framework.h"
 #include "InputMgr.h"
 #include "ResourceMgr.h"
+#include "AnimationClip.h"
+#include "Animator.h"
 #include "GameObject.h"
 #include "TextGo.h"
 #include "SpriteGo.h"
