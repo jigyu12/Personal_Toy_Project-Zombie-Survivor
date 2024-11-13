@@ -2,6 +2,7 @@
 
 #include <random>
 #include <list>
+#include <vector>
 #include <queue>
 #include <unordered_map>
 #include <unordered_set>
@@ -11,11 +12,13 @@
 #include <fstream>
 #include <locale>
 #include <codecvt>
+#include <functional>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
 #include "rapidcsv.h"
+#include "json.hpp"
 #include "Defines.h"
 #include "Variables.h"
 #include "DebugBox.h"
@@ -38,3 +41,4 @@
 #include "ObjectPool.h"
 #include "SoundMgr.h"
 
+using json = nlohmann::json;

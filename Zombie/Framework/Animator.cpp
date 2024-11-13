@@ -1,6 +1,17 @@
 #include "stdafx.h"
 #include "Animator.h"
 
+void Animator::AddEvent(const std::string& id, int frame, std::function<void()> action)
+{
+	auto key = std::pair<std::string, int>(id, frame);
+	auto it = events.find(key);
+	if (it == events.end())
+	{
+		events.insert({ key, {id, frame} });
+	}
+	events[key].actions.push_back(action);
+}
+
 void Animator::Update(float dt)
 {
 	if (!isPlaying)
@@ -15,6 +26,14 @@ void Animator::Update(float dt)
 
 	if (currentFrame == checkFrame)
 	{
+		if (!playeQueue.empty())
+		{
+			std::string clipId = playeQueue.front();
+			Play(clipId, false);
+			playeQueue.pop();
+			return;
+		}
+
 		switch (currentClip->loopType)
 		{
 		case AnimationLoopTypes::Single:
@@ -27,15 +46,35 @@ void Animator::Update(float dt)
 	}
 
 	SetFrame(currentClip->frames[currentFrame]);
+	auto find = events.find({ currentClip->id, currentFrame });
+	if (find != events.end())
+	{
+		auto& ev = find->second;
+		for (auto& action : ev.actions)
+		{
+			if (action)
+			{
+				action();
+			}
+		}
+	}
 }
 
-void Animator::Play(const std::string& clipId)
+void Animator::Play(const std::string& clipId, bool clearQueue)
 {
-	Play(&ANI_CLIP_MGR.Get(clipId));
+	Play(&ANI_CLIP_MGR.Get(clipId), clearQueue);
 }
 
-void Animator::Play(AnimationClip* clip)
+void Animator::Play(AnimationClip* clip, bool clearQueue)
 {
+	if (clearQueue)
+	{
+		while (!playeQueue.empty())
+		{
+			playeQueue.pop();
+		}
+	}
+
 	isPlaying = true;
 
 	currentClip = clip;
@@ -48,6 +87,11 @@ void Animator::Play(AnimationClip* clip)
 	SetFrame(currentClip->frames[currentFrame]);
 }
 
+void Animator::PlayQueue(const std::string& clipId)
+{
+	playeQueue.push(clipId);
+}
+
 void Animator::Stop()
 {
 	isPlaying = false;
@@ -57,4 +101,5 @@ void Animator::SetFrame(const AnimationFrame& frame)
 {
 	sprite->setTexture(TEXTURE_MGR.Get(frame.texId));
 	sprite->setTextureRect(frame.texCoord);
+	//sprite->
 }
