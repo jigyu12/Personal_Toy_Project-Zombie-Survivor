@@ -137,6 +137,29 @@ void SceneGame::Update(float dt)
 		OnLocalize(Variables::currentLang);
 	}
 
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+	{
+		SaveDataVC data;
+		for (auto zombie : zombies)
+		{
+			data.zombies.push_back(zombie->GetSaveData());
+		}
+		SaveLoadMgr::Instance().Save(data);
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::Num5))
+	{
+		SaveDataVC data = SaveLoadMgr::Instance().Load();
+		for (const auto& data : data.zombies)
+		{
+			Zombie* newZombie = zombiePool.Take();
+			newZombie->LoadSaveData(data);
+
+			zombies.push_back(newZombie);
+			AddGo(newZombie);
+		}
+	}
+
 	if (isGameOver)
 	{
 		uiGameOver->SetActive(true);

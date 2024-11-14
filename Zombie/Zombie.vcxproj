@@ -159,6 +159,8 @@
     <ClCompile Include="ItemHealth.cpp" />
     <ClCompile Include="Framework\StringTable.cpp" />
     <ClCompile Include="Framework\ItemTable.cpp" />
+    <ClCompile Include="Framework\SaveData.cpp" />
+    <ClCompile Include="Framework\SaveLoadMgr.cpp" />
     <ClCompile Include="UiGameOver.cpp" />
     <ClCompile Include="UiHud.cpp" />
     <ClCompile Include="Framework\Variables.cpp" />
@@ -223,6 +225,8 @@
     <ClInclude Include="ItemHealth.h" />
     <ClInclude Include="Framework\StringTable.h" />
     <ClInclude Include="Framework\ItemTable.h" />
+    <ClInclude Include="Framework\SaveData.h" />
+    <ClInclude Include="Framework\SaveLoadMgr.h" />
     <ClInclude Include="UiGameOver.h" />
     <ClInclude Include="UiHud.h" />
     <ClInclude Include="Framework\Utils.h" />

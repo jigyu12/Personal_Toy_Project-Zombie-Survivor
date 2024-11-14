@@ -25,6 +25,8 @@
 #include "HitBox.h"
 #include "Utils.h"
 #include "Singleton.h"
+#include "SaveData.h"
+#include "SaveLoadMgr.h"
 #include "DataTable.h"
 #include "StringTable.h"
 #include "DataTableMgr.h"

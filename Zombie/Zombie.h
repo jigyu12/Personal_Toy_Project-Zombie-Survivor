@@ -63,4 +63,7 @@ public:
 	void OnDamage(int damge);
 
 	bool GetIsDead() const { return isDead; }
+
+	SaveZombie GetSaveData() const;
+	void LoadSaveData(const SaveZombie& data);
 };
